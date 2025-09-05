@@ -17,6 +17,7 @@ file_list = os.listdir(file_path)
 app = xw.App(visible=True, add_book=False)
 # open workbook
 workbook = app.books.open('info.xlsx')
+
 worksheets = workbook.sheets   # get all sheets in the workbook -info.xlsx
 for i in file_list:  # target workbook
     if i.startswith('~$'):
@@ -25,11 +26,14 @@ for i in file_list:  # target workbook
         name = i.split('_')[0]
         print(name)
         new_file_path = os.path.join(file_path, i)
+        # \\ open file with absolute path
+        # \\d:\code\pythoncode\pythonExcel_2025\day4\sales\单肩包.xlsx
         workbooks = app.books.open(new_file_path)
+        # workbooks for target workbook
         for j in worksheets:  # loop through all sheets in info.xlsx
            contents = j.range('A1').expand('table').value  # get all data in the sheet
            name=j.name # get sheet name
-           workbooks.sheets.add(name, after=workbooks.sheets[-1]) # add new sheet
+           workbooks.sheets.add(name, after=workbooks.sheets[-1]) # add new sheet to the target workbook
            workbooks.sheets[name].range('A1').value = contents # write data to new sheet
         workbooks.save()
         
